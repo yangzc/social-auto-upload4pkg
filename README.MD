@@ -12,3 +12,6 @@ pip install dist/social_auto_upload-1.0.0.tar.gz
 
 # 依赖
 参考：[social-auto-upload](https://github.com/dreammis/social-auto-upload)
+
+# biliup工具
+参考：[biliup-rs](https://github.com/biliup/biliup-rs/releases)
