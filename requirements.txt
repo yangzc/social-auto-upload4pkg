@@ -1,0 +1,7 @@
+biliup==0.4.78
+loguru==0.7.2
+playwright==1.47.0
+qrcode==7.4.2
+Requests==2.32.3
+setuptools==69.5.1
+xhs==0.2.13
