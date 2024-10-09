@@ -18,4 +18,8 @@ setup(
     packages=get_packages(),
     install_requires=[
     ],
+    include_package_data=True,
+    package_data={
+        'social_auto_upload.utils': ['*.js']
+    }
 )
