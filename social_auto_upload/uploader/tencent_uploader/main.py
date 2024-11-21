@@ -221,8 +221,8 @@ class TencentVideo(object):
                             'div.media-status-content div.tag-inner:has-text("删除")').count():
                         tencent_logger.error("  [-] 发现上传出错了...准备重试")
                         await self.handle_upload_error(page)
-            except:
-                tencent_logger.info("  [-] 正在上传视频中...")
+            except Exception as e:
+                tencent_logger.info(f"  [-] 正在上传视频中..., e: {e}")
                 await asyncio.sleep(2)
 
     async def add_title_tags(self, page):
