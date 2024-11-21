@@ -137,8 +137,7 @@ class TencentVideo(object):
     async def upload(self, playwright: Playwright) -> None:
         # 使用 Chromium (这里使用系统内浏览器，用chromium 会造成h264错误
         browser = await playwright.chromium.launch(headless=True, executable_path=self.local_executable_path, args=[
-            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/114.0.0.0 Safari/537.36'])
+            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'])
         # 创建一个浏览器上下文，使用指定的 cookie 文件
         context = await browser.new_context(storage_state=f"{self.account_file}")
         context = await set_init_script(context)
@@ -211,11 +210,16 @@ class TencentVideo(object):
                 # 匹配删除按钮，代表视频上传完毕
                 class_list = await page.get_by_role("button", name="发表").get_attribute(
                     'class')
+                progress_txt = await page.query_selector('.ant-progress-text')
+                progress = "0%"
+                if progress_txt is not None:
+                    progress = await progress_txt.inner_html()
+
                 if "weui-desktop-btn_disabled" not in class_list:
                     tencent_logger.info("  [-]视频上传完毕")
                     break
                 else:
-                    tencent_logger.info(f"  [-] 正在上传视频中..., class_list: {class_list}")
+                    tencent_logger.info(f"  [-] 正在上传视频中[{progress}]..., class_list: {class_list}")
                     await asyncio.sleep(2)
                     # 出错了视频出错
                     if await page.locator('div.status-msg.error').count() and await page.locator(
