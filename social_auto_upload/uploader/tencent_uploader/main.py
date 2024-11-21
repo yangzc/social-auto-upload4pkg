@@ -209,12 +209,13 @@ class TencentVideo(object):
             # 匹配删除按钮，代表视频上传完毕，如果不存在，代表视频正在上传，则等待
             try:
                 # 匹配删除按钮，代表视频上传完毕
-                if "weui-desktop-btn_disabled" not in await page.get_by_role("button", name="发表").get_attribute(
-                        'class'):
+                class_list = await page.get_by_role("button", name="发表").get_attribute(
+                    'class')
+                if "weui-desktop-btn_disabled" not in class_list:
                     tencent_logger.info("  [-]视频上传完毕")
                     break
                 else:
-                    tencent_logger.info("  [-] 正在上传视频中...")
+                    tencent_logger.info(f"  [-] 正在上传视频中..., class_list: {class_list}")
                     await asyncio.sleep(2)
                     # 出错了视频出错
                     if await page.locator('div.status-msg.error').count() and await page.locator(
