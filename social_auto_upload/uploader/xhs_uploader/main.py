@@ -33,11 +33,13 @@ def sign_local(uri, data=None, a1="", web_session=""):
                 # 这个地方设置完浏览器 cookie 之后，如果这儿不 sleep 一下签名获取就失败了，如果经常失败请设置长一点试试
                 sleep(2)
                 encrypt_params = context_page.evaluate("([url, data]) => window._webmsxyw(url, data)", [uri, data])
+                browser.close()
                 return {
                     "x-s": encrypt_params["X-s"],
                     "x-t": str(encrypt_params["X-t"])
                 }
-        except Exception:
+        except Exception as e:
+            print(f"xhs sign_local error: {e}")
             # 这儿有时会出现 window._webmsxyw is not a function 或未知跳转错误，因此加一个失败重试趴
             pass
     raise Exception("重试了这么多次还是无法签名成功，寄寄寄")
